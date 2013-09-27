@@ -12,4 +12,5 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  */
 final class Permission
 {
+    public $roles;
 }

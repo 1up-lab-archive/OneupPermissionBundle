@@ -2,20 +2,21 @@
 
 namespace Oneup\PermissionBundle\Metadata;
 
+use Metadata\MergeableInterface;
 use Metadata\MergeableClassMetadata;
 
-class EntityMetadata implements MergeableClassMetadata
+class EntityMetadata extends MergeableClassMetadata
 {
-    protected $permissionMap;
+    protected $roles;
 
-    public function setPermissionMap(array $map)
+    public function getRoles()
     {
-        $this->permissionMap = $map;
+        return $this->roles;
     }
 
-    public function getPermissionMap()
+    public function setRoles(array $roles)
     {
-        return $this->permissionMap;
+        $this->roles = $roles;
     }
 
     public function merge(MergeableInterface $object)
