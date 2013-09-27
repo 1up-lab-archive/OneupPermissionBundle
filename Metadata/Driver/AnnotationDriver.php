@@ -7,6 +7,8 @@ use Metadata\Driver\DriverInterface;
 
 class AnnotationDriver implements DriverInterface
 {
+    protected $reader;
+
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
