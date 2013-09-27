@@ -12,6 +12,15 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oneup_permission');
 
+        $rootNode
+            ->children()
+                ->arrayNode('masks')
+                    ->prototype('scalar')->end()
+                    ->defaultValue(array('VIEW', 'EDIT', 'DELETE'))
+                ->end()
+            ->end()
+        ;
+
         return $treeBuilder;
     }
 }
