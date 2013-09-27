@@ -25,10 +25,13 @@ class AnnotationDriver implements DriverInterface
             return null;
         }
 
+        $foundBaseClass = false;
         $metadata = new EntityMetadata($name = $class->getName());
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Permission) {
+                $foundBaseClass = true;
+
                 if (!is_array($annotation->roles)) {
                     throw new \InvalidArgumentException('Provide an array of roles for the Permission annotation.');
                 }
@@ -43,6 +46,10 @@ class AnnotationDriver implements DriverInterface
             }
         }
 
-        return $metadata;
+        if ($foundBaseClass) {
+            return $metadata;
+        }
+
+        return null;
     }
 }

@@ -9,6 +9,7 @@
 
            <services>
                <service id="oneup_permission.permission_voter" class="%oneup_permission.permission_voter.class%">
+                   <argument type="service" id="oneup_permission.metadata.factory" />
                    <tag name="security.voter" />
                </service>
            </services>
