@@ -1,6 +1,6 @@
 <?php
 
-namespace Oneup\PermissionBundle\Mapping\Annotation;
+namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
 
 /**
  * This is the base annotation. If a class should

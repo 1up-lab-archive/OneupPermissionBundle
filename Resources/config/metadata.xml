@@ -15,7 +15,7 @@
                    <argument type="service" id="oneup_permission.metadata.lazy_loading_driver" />
                </service>
 
-               <service id="oneup_permission.metadata.driver_chain" class="%oneup_permission.metadata.driver_chain.class%" public="false">
+               <service id="oneup_permission.metadata.driver_chain" class="%oneup_permission.metadata.driver_chain.class%">
                    <argument type="collection">
                        <argument key="annotation" type="service" id="oneup_permission.metadata.annotation_driver"></argument>
                    </argument>
@@ -24,7 +24,7 @@
                <!-- drivers -->
                <service id="oneup_permission.metadata.lazy_loading_driver" class="%oneup_permission.metadata.lazy_loading_driver.class%" public="false">
                    <argument type="service" id="service_container" />
-                   <argument type="service" id="oneup_permission.metadata.driver_chain" />
+                   <argument>oneup_permission.metadata.driver_chain</argument>
                </service>
 
                <service id="oneup_permission.metadata.annotation_driver" class="%oneup_permission.metadata.annotation_driver.class%" public="false">
