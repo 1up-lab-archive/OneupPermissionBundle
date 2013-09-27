@@ -1,0 +1,20 @@
+{
+    "name": "oneup/permission-bundle",
+    "type": "symfony-bundle",
+    "homepage": "http://1up.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jim Schmid",
+            "email": "js@1up.io",
+            "homepage": "http://1up.io",
+            "role": "Developer"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": { "Oneup\\PermissionBundle": "" }
+    },
+
+    "target-dir": "Oneup/PermissionBundle"
+}
