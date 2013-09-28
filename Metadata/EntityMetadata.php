@@ -7,16 +7,33 @@ use Metadata\MergeableClassMetadata;
 
 class EntityMetadata extends MergeableClassMetadata
 {
-    protected $roles;
+    protected $classRoles;
+    protected $holders;
 
-    public function getRoles()
+    public function getClassRoles()
     {
-        return $this->roles;
+        return $this->classRoles;
     }
 
-    public function setRoles(array $roles)
+    public function setClassRoles(array $roles)
     {
-        $this->roles = $roles;
+        $this->classRoles = $roles;
+    }
+
+    public function getHolders()
+    {
+        return $this->holders;
+    }
+
+    public function addHolder(\ReflectionProperty $property, array $masks)
+    {
+        $name = $property->getName();
+
+        if (!array_key_exists($name, $this->holders)) {
+            $this->holders[$name] = array();
+        }
+
+        $this->holders[$name] = $masks;
     }
 
     public function merge(MergeableInterface $object)
@@ -28,5 +45,6 @@ class EntityMetadata extends MergeableClassMetadata
         parent::merge($object);
 
         $this->permissionMap = array_merge($this->permissionMap, $object->getPermissionMap());
+        $this->holders = array_merge($this->holders, $object->getHolders());
     }
 }

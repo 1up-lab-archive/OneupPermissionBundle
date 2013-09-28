@@ -42,7 +42,16 @@ class AnnotationDriver implements DriverInterface
                     }
                 }
 
-                $metadata->setRoles($annotation->roles);
+                $metadata->setClassRoles($annotation->roles);
+
+                // check if there are property annotations present
+                foreach ($class->getProperties() as $property) {
+                    $holderAnnotation = $this->reader->getPropertyAnnotation($property, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\Holder');
+
+                    if ($holderAnnotation) {
+                        // handle
+                    }
+                }
             }
         }
 
