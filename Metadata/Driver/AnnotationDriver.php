@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Metadata\Driver\DriverInterface;
 
 use Oneup\PermissionBundle\Metadata\EntityMetadata;
-use Oneup\PermissionBundle\Metadata\Mapping\Annotation\Permission;
+use Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject;
 
 class AnnotationDriver implements DriverInterface
 {
@@ -29,7 +29,7 @@ class AnnotationDriver implements DriverInterface
         $metadata = new EntityMetadata($name = $class->getName());
 
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Permission) {
+            if ($annotation instanceof DomainObject) {
                 $foundBaseClass = true;
 
                 if (!is_array($annotation->roles)) {

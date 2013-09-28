@@ -10,7 +10,7 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Permission
+final class DomainObject
 {
     public $roles;
 }
