@@ -18,6 +18,17 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->defaultValue(array('VIEW', 'EDIT', 'DELETE'))
                 ->end()
+                ->arrayNode('cache')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->enumNode('adapter')
+                            ->values(array('file', null))
+                            ->defaultValue('file')
+                        ->end()
+                        ->scalarNode('directory')->defaultNull()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 
