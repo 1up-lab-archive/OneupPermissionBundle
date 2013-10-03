@@ -5,13 +5,18 @@
 
            <parameters>
                <parameter key="oneup_permission.permission_voter.class">Oneup\PermissionBundle\Security\Voter\PermissionVoter</parameter>
+               <parameter key="oneup_permission.mask_hierarchy.class">Oneup\PermissionBundle\Security\MaskHierarchy</parameter>
            </parameters>
 
            <services>
                <service id="oneup_permission.permission_voter" class="%oneup_permission.permission_voter.class%">
                    <argument type="service" id="oneup_permission.metadata.factory" />
-                   <argument>%oneup_permission.masks%</argument>
+                   <argument type="service" id="oneup_permission.mask_hierarchy" />
                    <tag name="security.voter" />
+               </service>
+
+               <service id="oneup_permission.mask_hierarchy" class="%oneup_permission.mask_hierarchy.class%">
+                   <argument>%oneup_permission.mask_hierarchy%</argument>
                </service>
            </services>
 

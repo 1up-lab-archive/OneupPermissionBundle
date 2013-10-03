@@ -22,7 +22,7 @@ class OneupPermissionExtension extends Extension
         $loader->load('security.xml');
         $loader->load('metadata.xml');
 
-        $container->setParameter('oneup_permission.masks', $config['masks']);
+        $container->setParameter('oneup_permission.mask_hierarchy', $config['mask_hierarchy']);
 
         $this->handleCacheConfiguration($container, $loader, $config['cache']);
     }

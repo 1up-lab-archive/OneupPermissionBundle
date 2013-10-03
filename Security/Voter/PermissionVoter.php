@@ -8,21 +8,22 @@ use Metadata\MetadataFactory;
 use Doctrine\Common\Util\ClassUtils;
 
 use Oneup\PermissionBundle\Metadata\EntityMetadata;
+use Oneup\PermissionBundle\Security\MaskHierarchy;
 
 class PermissionVoter implements VoterInterface
 {
     protected $factory;
     protected $masks;
 
-    public function __construct(MetadataFactory $factory, array $masks)
+    public function __construct(MetadataFactory $factory, MaskHierarchy $maskHierarchy)
     {
         $this->factory = $factory;
-        $this->masks = $masks;
+        $this->maskHierarchy = $maskHierarchy;
     }
 
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->masks);
+        return in_array($attribute, $this->maskHierarchy->getMasks());
     }
 
     public function supportsClass($class)
@@ -54,7 +55,7 @@ class PermissionVoter implements VoterInterface
                 if (array_key_exists($roleStr, $metadataRoles)) {
                     $masks = $metadataRoles[$roleStr];
 
-                    if (!in_array($attribute, $masks)) {
+                    if (!in_array($attribute, $this->maskHierarchy->getReachable($masks))) {
                         return VoterInterface::ACCESS_DENIED;
                     }
                 }
