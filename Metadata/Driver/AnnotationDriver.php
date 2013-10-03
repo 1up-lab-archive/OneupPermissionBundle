@@ -49,8 +49,6 @@ class AnnotationDriver implements DriverInterface
             }
         }
 
-        var_dump($metadata);
-
         return $metadata;
     }
 }
