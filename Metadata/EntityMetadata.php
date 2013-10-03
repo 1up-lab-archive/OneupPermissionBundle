@@ -7,33 +7,39 @@ use Metadata\MergeableClassMetadata;
 
 class EntityMetadata extends MergeableClassMetadata
 {
-    protected $classRoles;
-    protected $holders;
+    protected $classPermissions;
+    protected $objectPermissions;
 
-    public function getClassRoles()
+    public function __construct()
     {
-        return $this->classRoles;
+        $this->classPermissions = array();
+        $this->objectPermissions = array();
     }
 
-    public function setClassRoles(array $roles)
+    public function getClassPermissions()
     {
-        $this->classRoles = $roles;
+        return $this->classPermissions;
     }
 
-    public function getHolders()
+    public function setClassPermissions(array $permissions)
     {
-        return $this->holders;
+        $this->classPermissions = $permissions;
     }
 
-    public function addHolder(\ReflectionProperty $property, array $masks)
+    public function getObjectPermissions()
+    {
+        return $this->objectPermissions();
+    }
+
+    public function addObjectPermission(\ReflectionProperty $property, array $masks)
     {
         $name = $property->getName();
 
-        if (!array_key_exists($name, $this->holders)) {
-            $this->holders[$name] = array();
+        if (!array_key_exists($name, $this->objectPermissions)) {
+            $this->objectPermissions[$name] = array();
         }
 
-        $this->holders[$name] = $masks;
+        $this->objectPermissions[$name] = $masks;
     }
 
     public function merge(MergeableInterface $object)
@@ -44,7 +50,7 @@ class EntityMetadata extends MergeableClassMetadata
 
         parent::merge($object);
 
-        $this->permissionMap = array_merge($this->permissionMap, $object->getPermissionMap());
-        $this->holders = array_merge($this->holders, $object->getHolders());
+        $this->classPermissions = array_merge($this->classPermissions, $object->getClassPermissions());
+        $this->objectPermissions = array_merge($this->objectPermissions, $object->getObjectPermissions());
     }
 }

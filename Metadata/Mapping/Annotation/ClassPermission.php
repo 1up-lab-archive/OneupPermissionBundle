@@ -8,26 +8,26 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  */
 final class ClassPermission
 {
-    private $roles;
+    private $permissions;
 
     public function __construct($input)
     {
-        $this->roles = array();
+        $this->permissions = array();
 
         if (array_key_exists('value', $input)) {
-            $roles = $input['value'];
+            $permissions = $input['value'];
 
             // normalize array
-            foreach ($roles as $key => $role) {
-                $roles[$key] = (array) $role;
+            foreach ($permissions as $key => $permission) {
+                $permissions[$key] = (array) $permission;
             }
 
-            $this->roles = $roles;
+            $this->permissions = $permissions;
         }
     }
 
-    public function getRoles()
+    public function getPermissions()
     {
-        return $this->roles;
+        return $this->permissions;
     }
 }

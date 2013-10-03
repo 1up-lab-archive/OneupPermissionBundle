@@ -8,12 +8,17 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  */
 final class ObjectPermission
 {
-    protected $permissions;
+    private $permissions;
 
     public function __construct($value)
     {
         if (array_key_exists('value', $value)) {
             $this->permissions = $value['value'];
         }
+    }
+
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 }

@@ -19,8 +19,12 @@ class AnnotationDriver implements DriverInterface
 
     public function loadMetadataForClass(\ReflectionClass $class)
     {
+        $strDomainObject     = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject';
+        $strClassPermission  = 'Oneup\PermissionBundle\MetaData\Mapping\Annotation\ClassPermission';
+        $strObjectPermission = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\ObjectPermission';
+
         // see if we can find the base annotation needed to handle this file
-        $base = $this->reader->getClassAnnotation($class, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject');
+        $base = $this->reader->getClassAnnotation($class, $strDomainObject);
 
         if (!$base) {
             return null;
@@ -33,21 +37,25 @@ class AnnotationDriver implements DriverInterface
         $classPermission = $base->getClassPermission();
 
         if (!$classPermission) {
-            $classPermission = $this->reader->getClassAnnotation($class, 'Oneup\PermissionBundle\MetaData\Mapping\Annotation\ClassPermission');
+            $classPermission = $this->reader->getClassAnnotation($class, $strClassPermission);
         }
 
         if ($classPermission) {
-            $metadata->setClassRoles($classPermission->getRoles());
+            $metadata->setClassPermissions($classPermission->getPermissions());
         }
 
         // check if there are property annotations present
         foreach ($class->getProperties() as $property) {
-            $holder = $this->reader->getPropertyAnnotation($property, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\Holder');
+            $objectPermission = $this->reader->getPropertyAnnotation($property, $strObjectPermission);
 
-            if (!$holder) {
+            if (!$objectPermission) {
                 continue;
             }
+
+            $metadata->addObjectPermission($property, $objectPermission->getPermissions());
         }
+
+        var_dump($metadata);die();
 
         return $metadata;
     }
