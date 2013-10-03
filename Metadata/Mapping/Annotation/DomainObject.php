@@ -12,5 +12,23 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  */
 final class DomainObject
 {
-    public $roles;
+    private $classPermission;
+
+    public function __construct($input)
+    {
+        if (array_key_exists('value', $input)) {
+            $subAnnotation = $input['value'];
+
+            if (!$subAnnotation instanceof ClassPermission) {
+                throw new \InvalidArgumentException('Only ClassPermission annotation are allowed to embed in DomainObject.');
+            }
+
+            $this->classPermission = $subAnnotation;
+        }
+    }
+
+    public function getClassPermission()
+    {
+        return $this->classPermission;
+    }
 }

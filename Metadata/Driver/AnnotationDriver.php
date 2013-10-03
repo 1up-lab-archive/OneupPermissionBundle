@@ -29,16 +29,16 @@ class AnnotationDriver implements DriverInterface
         // found the base annotation, means we have something to return
         $metadata = new EntityMetadata($name = $class->getName());
 
-        if (!is_array($base->roles)) {
-            throw new \InvalidArgumentException('Provide an array of roles for the Permission annotation.');
+        // find ClassPermission annotation
+        $classPermission = $base->getClassPermission();
+
+        if (!$classPermission) {
+            $classPermission = $this->reader->getClassAnnotation($class, 'Oneup\PermissionBundle\MetaData\Mapping\Annotation\ClassPermission');
         }
 
-        // normalize role array
-        foreach ($base->roles as $key => $role) {
-            $base->roles[$key] = (array) $role;
+        if ($classPermission) {
+            $metadata->setClassRoles($classPermission->getRoles());
         }
-
-        $metadata->setClassRoles($base->roles);
 
         // check if there are property annotations present
         foreach ($class->getProperties() as $property) {
@@ -48,6 +48,8 @@ class AnnotationDriver implements DriverInterface
                 continue;
             }
         }
+
+        var_dump($metadata);
 
         return $metadata;
     }

@@ -6,7 +6,7 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-final class Holder
+final class ObjectPermission
 {
     protected $permissions;
 
