@@ -19,46 +19,36 @@ class AnnotationDriver implements DriverInterface
 
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        $annotations = $this->reader->getClassAnnotations($class);
+        // see if we can find the base annotation needed to handle this file
+        $base = $this->reader->getClassAnnotation($class, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject');
 
-        if (count($annotations) == 0) {
+        if (!$base) {
             return null;
         }
 
-        $foundBaseClass = false;
+        // found the base annotation, means we have something to return
         $metadata = new EntityMetadata($name = $class->getName());
 
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof DomainObject) {
-                $foundBaseClass = true;
+        if (!is_array($base->roles)) {
+            throw new \InvalidArgumentException('Provide an array of roles for the Permission annotation.');
+        }
 
-                if (!is_array($annotation->roles)) {
-                    throw new \InvalidArgumentException('Provide an array of roles for the Permission annotation.');
-                }
+        // normalize role array
+        foreach ($base->roles as $key => $role) {
+            $base->roles[$key] = (array) $role;
+        }
 
-                foreach ($annotation->roles as $key => $role) {
-                    if (!is_array($role)) {
-                        $annotation->roles[$key] = (array) $role;
-                    }
-                }
+        $metadata->setClassRoles($base->roles);
 
-                $metadata->setClassRoles($annotation->roles);
+        // check if there are property annotations present
+        foreach ($class->getProperties() as $property) {
+            $holder = $this->reader->getPropertyAnnotation($property, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\Holder');
 
-                // check if there are property annotations present
-                foreach ($class->getProperties() as $property) {
-                    $holderAnnotation = $this->reader->getPropertyAnnotation($property, 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\Holder');
-
-                    if ($holderAnnotation) {
-                        // handle
-                    }
-                }
+            if (!$holder) {
+                continue;
             }
         }
 
-        if ($foundBaseClass) {
-            return $metadata;
-        }
-
-        return null;
+        return $metadata;
     }
 }
