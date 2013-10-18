@@ -55,8 +55,6 @@ class AnnotationDriver implements DriverInterface
             $metadata->addObjectPermission($property, $objectPermission->getPermissions());
         }
 
-        var_dump($metadata);die();
-
         return $metadata;
     }
 }

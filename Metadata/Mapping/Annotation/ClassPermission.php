@@ -10,7 +10,7 @@ final class ClassPermission
 {
     private $permissions;
 
-    public function __construct($input)
+    public function __construct($input = array())
     {
         $this->permissions = array();
 
