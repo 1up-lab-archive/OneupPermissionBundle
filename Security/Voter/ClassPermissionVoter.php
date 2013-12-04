@@ -10,7 +10,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Oneup\PermissionBundle\Metadata\EntityMetadata;
 use Oneup\PermissionBundle\Security\MaskHierarchy;
 
-class PermissionVoter implements VoterInterface
+class ClassPermissionVoter implements VoterInterface
 {
     protected $factory;
     protected $masks;
