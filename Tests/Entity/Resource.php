@@ -48,12 +48,12 @@ class Resource
         return $this->stakeholders;
     }
 
-    public function setSteakholders(array $holders)
+    public function setStakeholders(array $holders)
     {
-        $this->steakholders = $holders;
+        $this->stakeholders = $holders;
     }
 
-    public function addSteakholder($holder)
+    public function addStakeholder($holder)
     {
         $this->stakeholders[] = $holder;
     }
