@@ -51,18 +51,37 @@ class UserPermissionVoter implements VoterInterface
             }
 
             foreach ($metadataUsers as $property => $permissions) {
-                $holder = $this->accessor->getValue($object, $property);
+                $holders = $this->accessor->getValue($object, $property);
 
-                if ($holder->getUser() == $token->getUser()) {
+                if (is_array($holders) && count($holders) == 0) {
+                    continue;
+                }
 
-                    if (in_array($attribute, $permissions)) {
+                if (is_null($holders)) {
+                    continue;
+                }
+
+                if (!is_array($holders) && !($holders instanceof \Traversable)) {
+                    $holders = array($holders);
+                }
+
+                foreach ($holders as $holder) {
+                    if ($this->checkHolderAccess($holder, $token, $attribute, $permissions)) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
-
                 }
             }
         }
 
         return VoterInterface::ACCESS_DENIED;
+    }
+
+    protected function checkHolderAccess(TokenInterface $holder, TokenInterface $token, $attribute, array $permissions)
+    {
+        if ($holder->getUser() != $token->getUser()) {
+            return false;
+        }
+
+        return in_array($attribute, $permissions);
     }
 }

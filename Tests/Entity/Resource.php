@@ -15,12 +15,42 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation as Permission;
 class Resource
 {
     /**
-     * @Permission\UserPermission({"VIEW", "EDIT", "DELETE"})
+     * @Permission\UserPermission({"VIEW"})
      */
     protected $owner;
+
+    /**
+     * @Permission\UserPermission({"VIEW", "EDIT"})
+     */
+    protected $stakeholders;
+
+    public function __construct()
+    {
+        $this->stakeholders = array();
+    }
 
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    public function getStakeholders()
+    {
+        return $this->stakeholders;
+    }
+
+    public function setSteakholders(array $holders)
+    {
+        $this->steakholders = $holders;
+    }
+
+    public function addSteakholder($holder)
+    {
+        $this->stakeholders[] = $holder;
     }
 }
