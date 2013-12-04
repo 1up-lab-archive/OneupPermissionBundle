@@ -7,39 +7,39 @@ use Metadata\MergeableClassMetadata;
 
 class EntityMetadata extends MergeableClassMetadata
 {
-    protected $classPermissions;
-    protected $objectPermissions;
+    protected $rolePermissions;
+    protected $userPermissions;
 
     public function __construct()
     {
-        $this->classPermissions = array();
-        $this->objectPermissions = array();
+        $this->rolePermissions = array();
+        $this->userPermissions = array();
     }
 
-    public function getClassPermissions()
+    public function getRolePermissions()
     {
-        return $this->classPermissions;
+        return $this->rolePermissions;
     }
 
-    public function setClassPermissions(array $permissions)
+    public function setRolePermissions(array $permissions)
     {
-        $this->classPermissions = $permissions;
+        $this->rolePermissions = $permissions;
     }
 
-    public function getObjectPermissions()
+    public function getUserPermissions()
     {
-        return $this->objectPermissions();
+        return $this->userPermissions;
     }
 
-    public function addObjectPermission(\ReflectionProperty $property, array $masks)
+    public function addUserPermission(\ReflectionProperty $property, array $masks)
     {
         $name = $property->getName();
 
-        if (!array_key_exists($name, $this->objectPermissions)) {
-            $this->objectPermissions[$name] = array();
+        if (!array_key_exists($name, $this->userPermissions)) {
+            $this->userPermissions[$name] = array();
         }
 
-        $this->objectPermissions[$name] = $masks;
+        $this->userPermissions[$name] = $masks;
     }
 
     public function merge(MergeableInterface $object)
@@ -50,7 +50,7 @@ class EntityMetadata extends MergeableClassMetadata
 
         parent::merge($object);
 
-        $this->classPermissions = array_merge($this->classPermissions, $object->getClassPermissions());
-        $this->objectPermissions = array_merge($this->objectPermissions, $object->getObjectPermissions());
+        $this->rolePermissions = array_merge($this->rolePermissions, $object->getRolePermissions());
+        $this->userPermissions = array_merge($this->userPermissions, $object->getUserPermissions());
     }
 }

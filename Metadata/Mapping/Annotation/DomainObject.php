@@ -2,6 +2,8 @@
 
 namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
 
+use Oneup\PermissionBundle\Metadata\Mapping\Annotation\RolePermission;
+
 /**
  * This is the base annotation. If a class should
  * be handled by this bundle, it must be annotated
@@ -12,23 +14,23 @@ namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
  */
 final class DomainObject
 {
-    private $classPermission;
+    private $rolePermission;
 
     public function __construct($input)
     {
         if (array_key_exists('value', $input)) {
             $subAnnotation = $input['value'];
 
-            if (!$subAnnotation instanceof ClassPermission) {
-                throw new \InvalidArgumentException('Only ClassPermission annotation are allowed to embed in DomainObject.');
+            if (!$subAnnotation instanceof RolePermission) {
+                throw new \InvalidArgumentException('Only RolePermission annotation are allowed to embed in DomainObject.');
             }
 
-            $this->classPermission = $subAnnotation;
+            $this->rolePermission = $subAnnotation;
         }
     }
 
-    public function getClassPermission()
+    public function getRolePermission()
     {
-        return $this->classPermission;
+        return $this->rolePermission;
     }
 }

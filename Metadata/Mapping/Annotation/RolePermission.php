@@ -2,17 +2,17 @@
 
 namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
 
+use Oneup\PermissionBundle\Metadata\Mapping\PermissionHolderInterface;
+
 /**
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
  */
-final class ClassPermission
+final class RolePermission extends PermissionHolder
 {
-    private $permissions;
-
     public function __construct($input = array())
     {
-        $this->permissions = array();
+        parent::__construct();
 
         if (array_key_exists('value', $input)) {
             $permissions = $input['value'];
@@ -24,10 +24,5 @@ final class ClassPermission
 
             $this->permissions = $permissions;
         }
-    }
-
-    public function getPermissions()
-    {
-        return $this->permissions;
     }
 }

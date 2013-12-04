@@ -19,9 +19,9 @@ class AnnotationDriver implements DriverInterface
 
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        $strDomainObject     = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject';
-        $strClassPermission  = 'Oneup\PermissionBundle\MetaData\Mapping\Annotation\ClassPermission';
-        $strObjectPermission = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\ObjectPermission';
+        $strDomainObject   = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\DomainObject';
+        $strRolePermission = 'Oneup\PermissionBundle\MetaData\Mapping\Annotation\RolePermission';
+        $strUserPermission = 'Oneup\PermissionBundle\Metadata\Mapping\Annotation\UserPermission';
 
         // see if we can find the base annotation needed to handle this file
         $base = $this->reader->getClassAnnotation($class, $strDomainObject);
@@ -34,25 +34,25 @@ class AnnotationDriver implements DriverInterface
         $metadata = new EntityMetadata($name = $class->getName());
 
         // find ClassPermission annotation
-        $classPermission = $base->getClassPermission();
+        $rolePermission = $base->getRolePermission();
 
-        if (!$classPermission) {
-            $classPermission = $this->reader->getClassAnnotation($class, $strClassPermission);
+        if (!$rolePermission) {
+            $rolePermission = $this->reader->getClassAnnotation($class, $strRolePermission);
         }
 
-        if ($classPermission) {
-            $metadata->setClassPermissions($classPermission->getPermissions());
+        if ($rolePermission) {
+            $metadata->setRolePermissions($rolePermission->getPermissions());
         }
 
         // check if there are property annotations present
         foreach ($class->getProperties() as $property) {
-            $objectPermission = $this->reader->getPropertyAnnotation($property, $strObjectPermission);
+            $userPermission = $this->reader->getPropertyAnnotation($property, $strUserPermission);
 
-            if (!$objectPermission) {
+            if (!$userPermission) {
                 continue;
             }
 
-            $metadata->addObjectPermission($property, $objectPermission->getPermissions());
+            $metadata->addUserPermission($property, $userPermission->getPermissions());
         }
 
         return $metadata;

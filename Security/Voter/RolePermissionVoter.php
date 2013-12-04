@@ -10,7 +10,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Oneup\PermissionBundle\Metadata\EntityMetadata;
 use Oneup\PermissionBundle\Security\MaskHierarchy;
 
-class ClassPermissionVoter implements VoterInterface
+class RolePermissionVoter implements VoterInterface
 {
     protected $factory;
     protected $masks;
@@ -47,7 +47,7 @@ class ClassPermissionVoter implements VoterInterface
                 continue;
             }
 
-            $metadataRoles = $metadata->getClassPermissions();
+            $metadataRoles = $metadata->getRolePermissions();
 
             foreach ($token->getRoles() as $role) {
                 $roleStr = $role->getRole();
