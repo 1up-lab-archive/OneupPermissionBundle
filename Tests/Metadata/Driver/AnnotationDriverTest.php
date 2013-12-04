@@ -23,7 +23,7 @@ class AnnotationDriverTest extends AbstractDriverTest
 
     public function testEmptyDomainObjectAnnotation()
     {
-        $annotation = new Annotation\ClassPermission();
+        $annotation = new Annotation\RolePermission();
 
         $this->assertTrue(is_array($annotation->getPermissions()));
         $this->assertEmpty($annotation->getPermissions());
@@ -31,7 +31,7 @@ class AnnotationDriverTest extends AbstractDriverTest
 
     public function testArrayArgumentClassPermissionAnnotation()
     {
-        $annotation = new Annotation\ClassPermission(array(
+        $annotation = new Annotation\RolePermission(array(
             'value' => array(
                 'ROLE_USER'  => array('VIEW'),
                 'ROLE_ADMIN' => array('IDDQD')
@@ -48,7 +48,7 @@ class AnnotationDriverTest extends AbstractDriverTest
 
     public function testNonArrayArgumentClassPermissionAnnotation()
     {
-        $annotation = new Annotation\ClassPermission(array(
+        $annotation = new Annotation\RolePermission(array(
             'value' => array(
                 'ROLE_USER'  => 'VIEW',
                 'ROLE_ADMIN' => 'IDDQD'

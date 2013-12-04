@@ -6,7 +6,7 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation as Permission;
 
 /**
  * @Permission\DomainObject(
- *   @Permission\ClassPermission({
+ *   @Permission\RolePermission({
  *     "ROLE_USER" = {"VIEW"},
  *     "ROLE_ADMIN" = {"IDDQD"}
  *   })
@@ -15,7 +15,7 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation as Permission;
 class Resource
 {
     /**
-     * @Permission\ObjectPermission({"VIEW", "EDIT", "DELETE"})
+     * @Permission\UserPermission({"VIEW", "EDIT", "DELETE"})
      */
     protected $owner;
 }
