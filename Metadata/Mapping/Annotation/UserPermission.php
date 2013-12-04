@@ -6,7 +6,7 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation\PermissionHolder;
 
 /**
  * @Annotation
- * @Target({"PROPERTY"})
+ * @Target({"ANNOTATION", "PROPERTY"})
  */
 final class UserPermission extends PermissionHolder
 {

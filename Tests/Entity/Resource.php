@@ -10,6 +10,10 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation as Permission;
  *     "ROLE_USER" = {"VIEW"},
  *     "ROLE_ADMIN" = {"IDDQD"}
  *   })
+ *   @Permission\UserPermission({
+ *     "owner" = {"VIEW"},
+ *     "stakeholders" = {"VIEW", "EDIT"}
+ *   })
  * )
  */
 class Resource

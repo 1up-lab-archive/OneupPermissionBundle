@@ -3,6 +3,8 @@
 namespace Oneup\PermissionBundle\Metadata\Mapping\Annotation;
 
 use Oneup\PermissionBundle\Metadata\Mapping\Annotation\RolePermission;
+use Oneup\PermissionBundle\Metadata\Mapping\Annotation\UserPermission;
+
 
 /**
  * This is the base annotation. If a class should
@@ -14,23 +16,45 @@ use Oneup\PermissionBundle\Metadata\Mapping\Annotation\RolePermission;
  */
 final class DomainObject
 {
-    private $rolePermission;
+    private $rolePermissions;
+    private $userPermissions;
 
     public function __construct($input)
     {
-        if (array_key_exists('value', $input)) {
-            $subAnnotation = $input['value'];
+        $this->rolePermissions = array();
+        $this->userPermissions = array();
 
-            if (!$subAnnotation instanceof RolePermission) {
-                throw new \InvalidArgumentException('Only RolePermission annotation are allowed to embed in DomainObject.');
+        if (array_key_exists('value', $input)) {
+            $subAnnotations = $input['value'];
+
+            if (!is_array($subAnnotations)) {
+                $subAnnotations = array($subAnnotations);
             }
 
-            $this->rolePermission = $subAnnotation;
+            foreach ($subAnnotations as $annotation) {
+
+                if ($annotation instanceof RolePermission) {
+                    $this->rolePermissions[] = $annotation;
+                    continue;
+                }
+
+                if ($annotation instanceof UserPermission) {
+                    $this->userPermissions[] = $annotation;
+                    continue;
+                }
+
+                throw new \InvalidArgumentException('Only RolePermission annotation are allowed to embed in DomainObject.');
+            }
         }
     }
 
-    public function getRolePermission()
+    public function getRolePermissions()
     {
-        return $this->rolePermission;
+        return $this->rolePermissions;
+    }
+
+    public function getUserPermissions()
+    {
+        return $this->userPermissions;
     }
 }

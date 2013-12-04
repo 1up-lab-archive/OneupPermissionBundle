@@ -33,15 +33,20 @@ class AnnotationDriver implements DriverInterface
         // found the base annotation, means we have something to return
         $metadata = new EntityMetadata($name = $class->getName());
 
-        // find ClassPermission annotation
-        $rolePermission = $base->getRolePermission();
+        // find ClassPermission annotations
+        $rolePermissions = $base->getRolePermissions();
 
-        if (!$rolePermission) {
-            $rolePermission = $this->reader->getClassAnnotation($class, $strRolePermission);
+        foreach ($rolePermissions as $rolePermission) {
+            $metadata->addRolePermission($rolePermission->getPermissions());
         }
 
-        if ($rolePermission) {
-            $metadata->setRolePermissions($rolePermission->getPermissions());
+        // find posible UserPermission annotations
+        $userPermissions = $base->getUserPermissions();
+
+        foreach ($userPermissions as $userPermission) {
+            foreach ($userPermission->getPermissions() as $property => $permission) {
+                $metadata->addUserPermission($property, $permission);
+            }
         }
 
         // check if there are property annotations present
@@ -54,6 +59,8 @@ class AnnotationDriver implements DriverInterface
 
             $metadata->addUserPermission($property, $userPermission->getPermissions());
         }
+
+        var_dump($metadata);
 
         return $metadata;
     }

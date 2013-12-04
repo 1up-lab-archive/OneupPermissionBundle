@@ -21,9 +21,9 @@ class EntityMetadata extends MergeableClassMetadata
         return $this->rolePermissions;
     }
 
-    public function setRolePermissions(array $permissions)
+    public function addRolePermission(array $permissions)
     {
-        $this->rolePermissions = $permissions;
+        $this->rolePermissions = array_merge($this->rolePermissions, $permissions);
     }
 
     public function getUserPermissions()
@@ -31,9 +31,11 @@ class EntityMetadata extends MergeableClassMetadata
         return $this->userPermissions;
     }
 
-    public function addUserPermission(\ReflectionProperty $property, array $masks)
+    public function addUserPermission($name, array $masks)
     {
-        $name = $property->getName();
+        if ($name instanceof \ReflectionProperty) {
+            $name = $name->getName();
+        }
 
         if (!array_key_exists($name, $this->userPermissions)) {
             $this->userPermissions[$name] = array();
