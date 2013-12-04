@@ -4,21 +4,23 @@ namespace Oneup\PermissionBundle\Security\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Metadata\MetadataFactory;
 use Doctrine\Common\Util\ClassUtils;
 
 use Oneup\PermissionBundle\Metadata\EntityMetadata;
 use Oneup\PermissionBundle\Security\MaskHierarchy;
 
-class RolePermissionVoter implements VoterInterface
+class UserPermissionVoter implements VoterInterface
 {
     protected $factory;
     protected $masks;
 
-    public function __construct(MetadataFactory $factory, MaskHierarchy $maskHierarchy)
+    public function __construct(MetadataFactory $factory, MaskHierarchy $maskHierarchy, PropertyAccessor $accessor)
     {
         $this->factory = $factory;
         $this->maskHierarchy = $maskHierarchy;
+        $this->accessor = $accessor;
     }
 
     public function supportsAttribute($attribute)
@@ -41,26 +43,26 @@ class RolePermissionVoter implements VoterInterface
         }
 
         $metadata = $this->factory->getMetadataForClass($class);
-        $metadataRoles = $metadata->getRolePermissions();
+        $metadataUsers = $metadata->getUserPermissions();
 
         foreach ($attributes as $attribute) {
             if (!$this->supportsAttribute($attribute)) {
                 continue;
             }
 
-            foreach ($token->getRoles() as $role) {
-                $roleStr = $role->getRole();
+            foreach ($metadataUsers as $property => $permissions) {
+                $holder = $this->accessor->getValue($object, $property);
 
-                if (array_key_exists($roleStr, $metadataRoles)) {
-                    $masks = $metadataRoles[$roleStr];
+                if ($holder->getUser() == $token->getUser()) {
 
-                    if (!in_array($attribute, $this->maskHierarchy->getReachable($masks))) {
-                        return VoterInterface::ACCESS_DENIED;
+                    if (in_array($attribute, $permissions)) {
+                        return VoterInterface::ACCESS_GRANTED;
                     }
+
                 }
             }
         }
 
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
 }

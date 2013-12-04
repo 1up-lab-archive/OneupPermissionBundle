@@ -18,4 +18,9 @@ class Resource
      * @Permission\UserPermission({"VIEW", "EDIT", "DELETE"})
      */
     protected $owner;
+
+    public function getOwner()
+    {
+        return $this->owner;
+    }
 }
