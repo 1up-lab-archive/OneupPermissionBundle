@@ -47,7 +47,7 @@ class PermissionVoter implements VoterInterface
                 continue;
             }
 
-            $metadataRoles = $metadata->getClassRoles();
+            $metadataRoles = $metadata->getClassPermissions();
 
             foreach ($token->getRoles() as $role) {
                 $roleStr = $role->getRole();
